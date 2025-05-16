@@ -8,7 +8,7 @@ let udpPort;
 function createWindow() {
     win = new BrowserWindow({
         width: 1280,
-        height: 800,
+        height: 1080,icon: path.join(__dirname, 'assets', 'ETS-OSC_logo.png'),
         webPreferences: {
             preload: path.join(__dirname, 'preload.cjs'),
             nodeIntegration: false,
