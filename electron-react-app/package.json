@@ -2,13 +2,13 @@
   "name": "electron-react-app",
   "private": true,
   "version": "0.0.0",
-
   "scripts": {
     "dev": "vite",
     "electron": "electron electron/main.cjs",
     "start": "concurrently \"npm run dev\" \"npm run electron\""
   },
   "dependencies": {
+    "osc": "^2.4.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
