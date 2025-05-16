@@ -22,18 +22,17 @@ function App() {
     }, [executeOSC]);
 
     return (
-        <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
+        <div className="webview">
             <webview
                 ref={webviewRef}
                 src={url}
-                style={{ width: '100%', height: '100%' }}
                 partition="persist:main"
             />
 
             {!settingsOpen && (
                 <button
                     onClick={() => setSettingsOpen(true)}
-                    style={{ position: 'absolute', top: 7, left: 7, zIndex: 10 }}
+                    className="settings-button"
                 >
 
                 </button>

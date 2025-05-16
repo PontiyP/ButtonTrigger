@@ -1,3 +1,9 @@
+:root {
+    --text-color: #ffffff;
+    --border-color: #ffffff;
+    --background-color: #3b3d40;
+}
+
 button {
     width: 50px;
     height: 50px;
@@ -5,10 +11,18 @@ button {
     align-items: center;
     justify-content: center;
     background: transparent;
-    color: white;
+    color: var(--text-color);
+}
+label {
+    font-size: 22px;
 }
 hr {
     margin: 0;
+    border-color: var(--border-color);
+}
+webview {
+    width: 100%;
+    height: 100%;
 }
 .settings-panel {
     width: 400px;
@@ -18,8 +32,8 @@ hr {
     top: 0;
     left: 0;
     height: 100%;
-    background-color: #3b3d40;
-    color: white;
+    background-color: var(--background-color);
+    color: var(--text-color);
     padding: 20px;
     box-shadow: -5px 0 5px rgba(0,0,0,0.2);
     gap: 20px;
@@ -29,9 +43,9 @@ hr {
     justify-content: space-between;
     align-items: center;
     font-size: larger;
-    color: white;
+    color: var(--text-color);
     label{
-        border-bottom: #fff 1px solid;
+        border-bottom: var(--border-color) 1px solid;
     }
 }
 .settings-url {
@@ -42,7 +56,7 @@ hr {
         width: 100%;
         height: 25px;
         background: transparent;
-        color: white;
+        color: var(--text-color);
         font-size: 20px;
     }
 }
@@ -52,7 +66,18 @@ hr {
     overflow-y: auto;
     font-size: 12px;
     background: transparent;
-    padding: 5;
-    border: 1px solid #ccc;
+    padding: 5px;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
+}
+.settings-button {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    z-index: 10
+}
+.webview {
+    position: relative;
+    width: 100vw;
+    height: 100vh
 }
