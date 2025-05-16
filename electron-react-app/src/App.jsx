@@ -1,135 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useOscExecutor } from './hooks/useOscExecutor';
+import { useOscPortControl } from './hooks/useOscPortControl';
+import { useUrlControl } from './hooks/useUrlControl';
 
 function App() {
     const webviewRef = useRef(null);
-    const [url, setUrl] = useState(() => localStorage.getItem('url') || 'https://ets.weplay.tv');
     const [oscLog, setOscLog] = useState([]);
     const [settingsOpen, setSettingsOpen] = useState(false);
-    const [oscPort, setOscPort] = useState(() => parseInt(localStorage.getItem('oscPort')) || 3333);
+
+    const { url, setUrl } = useUrlControl();
+    const { oscPort, setOscPort, applyPort } = useOscPortControl();
+    const executeOSC = useOscExecutor(webviewRef);
 
     useEffect(() => {
         const handler = (event, msg) => {
             setOscLog((prev) => [...prev, msg]);
-            handleOSCCommand(msg);
+            executeOSC(msg);
         };
         window.electronAPI?.subscribeOSCMessage(handler);
-    }, []);
-
-    const handleOSCCommand = (msg) => {
-        if (!webviewRef.current || !msg.address) return;
-
-        const parts = msg.address.split("/").filter(Boolean);
-        const mode = parts[0];
-        const value = parts[1];
-        const keyword = parts[parts.length - 1];
-
-        let script = '';
-
-        if (mode === 'id') {
-            script = `
-        try {
-          const el = document.getElementById("${value}");
-          if (el) {
-            el.click();
-            console.log('✔️ Clicked element by id: ${value}');
-          } else {
-            console.warn('❌ No element found with id: ${value}');
-          }
-        } catch (err) {
-          console.error('⚠️ Error in injected script:', err);
-        }
-      `;
-        } else if (mode === 'class') {
-            script = `
-        try {
-          const matches = document.querySelectorAll(".${value}");
-          if (matches.length > 0) {
-            matches.forEach(el => el.click());
-            console.log('✔️ Clicked all elements with class: ${value}');
-          } else {
-            console.warn('❌ No elements found with class: ${value}');
-          }
-        } catch (err) {
-          console.error('⚠️ Error in injected script:', err);
-        }
-      `;
-        } else if (mode === 'text' && parts[1] === 'all') {
-            script = `
-        try {
-          const keyword = "${keyword}".toLowerCase();
-          const elements = Array.from(document.querySelectorAll('button, input[type=button], input[type=submit], [role=button], a'));
-          const matches = elements.filter(el => {
-            const text = el.innerText || el.value || el.textContent;
-            return text && text.toLowerCase().trim() === keyword;
-          });
-
-          if (matches.length > 0) {
-            matches.forEach(el => el.click());
-            console.log('✔️ Clicked all elements with text: ${keyword}');
-          } else {
-            console.warn('❌ No matching elements found for keyword: ${keyword}');
-          }
-        } catch (err) {
-          console.error('⚠️ Error in injected script:', err);
-        }
-      `;
-        } else if (mode === 'all') {
-            script = `
-        try {
-          const keyword = "${keyword}".toLowerCase();
-          const elements = Array.from(document.querySelectorAll('button, input[type=button], input[type=submit], [role=button], a'));
-          const matches = elements.filter(el => {
-            const text = el.innerText || el.value || el.textContent;
-            return text && text.toLowerCase().trim() === keyword;
-          });
-
-          if (matches.length > 0) {
-            matches.forEach(el => el.click());
-            console.log('✔️ Clicked all elements with text: ${keyword}');
-          } else {
-            console.warn('❌ No matching elements found for keyword: ${keyword}');
-          }
-        } catch (err) {
-          console.error('⚠️ Error in injected script:', err);
-        }
-      `;
-        } else {
-            script = `
-        try {
-          const keyword = "${keyword}".toLowerCase();
-          const elements = Array.from(document.querySelectorAll('button, input[type=button], input[type=submit], [role=button], a'));
-          const match = elements.find(el => {
-            const text = el.innerText || el.value || el.textContent;
-            return text && text.toLowerCase().trim() === keyword;
-          });
-
-          if (match) {
-            match.click();
-            console.log('✔️ Clicked element with text: ${keyword}');
-          } else {
-            console.warn('❌ No matching element found for keyword: ${keyword}');
-          }
-        } catch (err) {
-          console.error('⚠️ Error in injected script:', err);
-        }
-      `;
-        }
-
-        webviewRef.current.executeJavaScript(script);
-    };
-
-    const handleChangePort = () => {
-        const port = parseInt(oscPort);
-        if (!isNaN(port)) {
-            localStorage.setItem('oscPort', port);
-            window.electronAPI.changeOscPort(port);
-        }
-    };
-
-    const handleChangeUrl = (value) => {
-        setUrl(value);
-        localStorage.setItem('url', value);
-    };
+    }, [executeOSC]);
 
     return (
         <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
@@ -171,7 +60,7 @@ function App() {
                     </div>
 
                     <label style={{ marginTop: 10 }}>URL страницы</label>
-                    <input value={url} onChange={(e) => handleChangeUrl(e.target.value)} />
+                    <input value={url} onChange={(e) => setUrl(e.target.value)} />
                     <button onClick={() => webviewRef.current?.loadURL(url)} style={{ marginTop: 10 }}>
                         Перезагрузить
                     </button>
@@ -182,7 +71,7 @@ function App() {
                         value={oscPort}
                         onChange={(e) => setOscPort(e.target.value)}
                     />
-                    <button onClick={handleChangePort} style={{ marginTop: 10 }}>Сменить порт</button>
+                    <button onClick={applyPort} style={{ marginTop: 10 }}>Сменить порт</button>
 
                     <hr style={{ margin: '20px 0' }} />
 
