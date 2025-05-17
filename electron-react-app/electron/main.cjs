@@ -4,8 +4,14 @@ const osc = require('osc');
 
 let win;
 let udpPort;
+const isDev = !app.isPackaged;
 
 function createWindow() {
+
+    const distPath = path.join(app.getAppPath(), 'dist');
+    const indexPath = path.join(distPath, 'index.html');
+
+
     win = new BrowserWindow({
         width: 1280,
         height: 1080,
@@ -18,7 +24,12 @@ function createWindow() {
         },
     });
 
-    win.loadURL('http://localhost:5173');
+    if (isDev) {
+        win.loadURL('http://localhost:5173');
+        // win.webContents.openDevTools({ mode: 'detach' });
+    } else {
+        win.loadFile(indexPath);
+    }
 }
 
 function startOscServer(port = 3333) {

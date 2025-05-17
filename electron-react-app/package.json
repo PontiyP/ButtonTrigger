@@ -33,22 +33,20 @@
     "appId": "com.yourcompany.yourapp",
     "productName": "ETS-OSC_App",
     "files": [
-      "dist/**/*",
-      "electron/**/*",
-      "preload.cjs",
-      "main.cjs",
-      "package.json"
+      "dist/**",
+      "electron/**",
+      "preload.cjs"
     ],
     "directories": {
       "buildResources": "assets"
     },
     "mac": {
       "target": "dmg",
-      "icon": "icon.png"
+      "icon": "build/icon.icns"
     },
     "win": {
       "target": "nsis",
-      "icon": "icon.png"
+      "icon": "build/icon.ico"
     }
   }
 }
