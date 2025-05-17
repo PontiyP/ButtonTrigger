@@ -1,0 +1,11 @@
+{
+  "name": "ETS-OSC_app",
+  "private": true,
+  "version": "1.1.0",
+  "main": "electron/main.cjs",
+  "dependencies": {
+    "osc": "^2.4.5",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  }
+}

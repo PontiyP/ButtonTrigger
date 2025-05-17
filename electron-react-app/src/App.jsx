@@ -47,6 +47,7 @@ function App() {
                     setOscPort={setOscPort}
                     applyPort={applyPort}
                     oscLog={oscLog}
+                    onClearLog={() => setOscLog([])}
                     onClose={() => setSettingsOpen(false)}
                 />
             )}

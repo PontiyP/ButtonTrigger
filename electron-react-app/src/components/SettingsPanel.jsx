@@ -1,15 +1,16 @@
 import React from 'react';
 import {RefreshIcon} from "./RefrshIcon";
+import {ClearIcon} from "./ClearIcon";
 
 export function SettingsPanel({
                                   url,
                                   setUrl,
                                   reloadWebview,
                                   oscPort,
-                                  setOscPort,
                                   applyPort,
                                   oscLog,
-                                  onClose
+                                  onClose,
+                                  onClearLog
                               }) {
     return (
         <div className="settings-panel">
@@ -40,10 +41,14 @@ export function SettingsPanel({
                 </div>
             </div>
             <hr/>
-
-            <strong>OSC monitor:</strong>
+            <div className="osc-monitor-header">
+                <label>OSC monitor:</label>
+                <button onClick={onClearLog}>
+                    <ClearIcon/>
+                </button>
+            </div>
             <div className="osc-monitor">
-                {oscLog.slice(-20).map((m, i) => (
+                {oscLog.slice(-30).map((m, i) => (
                     <div key={i}>{JSON.stringify(m)}</div>
                 ))}
             </div>

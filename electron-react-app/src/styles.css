@@ -60,11 +60,17 @@ webview {
         font-size: 20px;
     }
 }
+.osc-monitor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .osc-monitor{
     display: flex;
+    flex-direction: column;
     flex: 1;
     overflow-y: auto;
-    font-size: 12px;
+    font-size: 18px;
     background: transparent;
     padding: 5px;
     border: 1px solid var(--border-color);
