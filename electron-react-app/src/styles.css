@@ -1,6 +1,6 @@
 :root {
-    --text-color: #ffffff;
-    --border-color: #ffffff;
+    --text-color: #eeee;
+    --border-color: #eeee;
     --background-color: #3b3d40;
 }
 
@@ -43,7 +43,8 @@ webview {
     justify-content: space-between;
     align-items: center;
     font-size: larger;
-    color: var(--text-color);
+    /*color: var(--text-color);*/
+    color: #cdb074;
     label{
         border-bottom: var(--border-color) 1px solid;
     }

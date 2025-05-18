@@ -23,7 +23,7 @@ export function SettingsPanel({
                 <div className="settings-url">
                     <input value={url} onChange={(e) => setUrl(e.target.value)} />
                     <button onClick={reloadWebview}>
-                        <RefreshIcon color={"white"}/>
+                        <RefreshIcon color={"#eeee"}/>
                     </button>
                 </div>
             </div>
@@ -36,7 +36,7 @@ export function SettingsPanel({
                         onChange={(e) => setOscPort(e.target.value)}
                     />
                     <button onClick={applyPort}>
-                        <RefreshIcon color={"white"}/>
+                        <RefreshIcon color={"#eeee"}/>
                     </button>
                 </div>
             </div>
@@ -44,7 +44,7 @@ export function SettingsPanel({
             <div className="osc-monitor-header">
                 <label>OSC monitor:</label>
                 <button onClick={onClearLog}>
-                    <ClearIcon/>
+                    <ClearIcon color={"#eeee"}/>
                 </button>
             </div>
             <div className="osc-monitor">

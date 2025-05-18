@@ -1,5 +1,5 @@
 {
-  "name": "ETS-OSC_app",
+  "name": "WebOSC_app",
   "private": true,
   "version": "1.1.0",
   "main": "electron/main.cjs",
@@ -31,7 +31,7 @@
   },
   "build": {
     "appId": "com.yourcompany.yourapp",
-    "productName": "ETS-OSC_App",
+    "productName": "Web OSC App",
     "files": [
       "dist/**",
       "electron/**",
@@ -42,7 +42,7 @@
     },
     "mac": {
       "target": "dmg",
-      "icon": "build/icon.icns"
+      "icon": "build/icon.png"
     },
     "win": {
       "target": "nsis",
