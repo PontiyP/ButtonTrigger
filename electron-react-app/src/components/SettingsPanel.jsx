@@ -7,6 +7,7 @@ export function SettingsPanel({
                                   setUrl,
                                   reloadWebview,
                                   oscPort,
+                                  setOscPort,
                                   applyPort,
                                   oscLog,
                                   onClose,
