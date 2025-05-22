@@ -1,12 +1,17 @@
-Electron WebView OSC Trigger
-This project enables remote interaction with a webpage loaded inside an Electron <webview> using OSC (Open Sound Control) messages. It allows triggering clicks on elements (e.g., buttons, links) by id, class, or visible text — and optionally scopes those actions to a specific parent container.
+# Electron WebView OSC Trigger
 
-🧩 Architecture
-Electron — loads the target website into a <webview>.
-React — provides UI components (optional).
-Preload script — bridges the Electron backend with the DOM in the webview.
-OSC server — listens for incoming OSC messages and executes corresponding DOM actions.
-📦 Installation
+This project enables remote interaction with a webpage loaded inside an Electron `<webview>` using OSC (Open Sound Control) messages. It allows triggering clicks on elements (e.g., buttons, links) by `id`, `class`, or visible text — and optionally scopes those actions to a specific parent container.
+
+## 🧩 Architecture
+
+- **Electron** — loads the target website into a `<webview>`.
+- **React** — provides UI components (optional).
+- **Preload script** — bridges the Electron backend with the DOM in the webview.
+- **OSC server** — listens for incoming OSC messages and executes corresponding DOM actions.
+
+## 📦 Installation
+
+```bash
 npm install
 		
 ##💡 OSC Command Formats
