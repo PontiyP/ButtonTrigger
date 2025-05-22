@@ -13,8 +13,8 @@ This project enables remote interaction with a webpage loaded inside an Electron
 
 ```bash
 npm install
-
-💡 OSC Command Formats
+		
+##💡 OSC Command Formats
 
 OSC Address                            Example Action Description
 /id/play-button                        Clicks the element with id="play-button"
