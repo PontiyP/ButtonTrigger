@@ -21,8 +21,6 @@ OSC Address                            Example Action Description
 /class/start-button                    Clicks all elements with class="start-button"
 /text/all/Run                          Clicks all buttons with visible text Run
 /all/text/Submit                       Same as above; both /text/all/... and /all/text/... are valid
-/scoped/id/1234/text/Start             Clicks the Start button inside a container with id="1234"
-/scoped/id/container123/class/action   Clicks all elements with .action class inside #container123
 
 Development Notes
 	•	All behavior is controlled via the generateScriptFromOSC() function.
