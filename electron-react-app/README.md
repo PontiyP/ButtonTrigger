@@ -9,4 +9,23 @@ Currently, two official plugins are available:
 
 ## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## 💡 OSC Command Formats
+
+| OSC Address                                      | Action Description |
+|--------------------------------------------------|--------------------|
+| `/id/play-button`                                | Click element with `id="play-button"` |
+| `/class/start-button`                            | Click all elements with `class="start-button"` |
+| `/text/all/Run` or `/all/text/Run`              | Click all elements with visible text "Run" |
+| `/text/Run`                                      | Click the first element with text "Run" |
+| `/scoped/id/1234/text/Start`                     | Click "Start" inside container `id="1234"` |
+| `/scoped/id/1234/class/action`                   | Click all `.action` elements inside `#1234` |
+| `/scoped/id/1234/inputName/seconds` + args: [60] | Set value `60` to `<input name="seconds">` inside `#1234` |
+| `/inputName/seconds` + args: [60]                | Set value `60` to global `<input name="seconds">` |
+
+## 🛠 Development Notes
+
+- All behavior is defined in the `generateScriptFromOSC()` function.
+- If no matching element is found, a warning is logged in the browser console.
+- The `scoped` mode allows restricting actions to within a specific container (`id`).
+- `inputName` commands support number fields and are compatible with React-like frameworks.

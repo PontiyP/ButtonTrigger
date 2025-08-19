@@ -1,21 +1,50 @@
-
 export function generateScriptFromOSC(msg, context = 'document') {
     const parts = msg.address.split('/').filter(Boolean);
     const mode = parts[0];
     const value = parts[1];
-    const keyword = parts[parts.length - 1];
+    const rawArg = msg.args?.[0];
+    const keyword = typeof rawArg === 'string'
+      ? rawArg
+      : rawArg?.toString?.() ?? parts[parts.length - 1];
 
     // Handle scoped mode
     if (mode === 'scoped' && value === 'id') {
         const parentId = parts[2];
-        const innerMsg = { address: '/' + parts.slice(3).join('/') };
-        const innerScript = generateScriptFromOSC(innerMsg, 'parent');
-        return `try {
-  const parent = document.getElementById("${parentId}");
-  if (parent) {
-${innerScript.replace(/^/gm, '    ')}
+        // Special handling for /scoped/id/{id}/inputName/{name}
+        if (parts[3] === 'inputName') {
+            const inputName = parts[4];
+            return `try {
+  const parents = document.querySelectorAll('[id="${parentId}"]');
+  if (parents.length > 0) {
+    parents.forEach(parent => {
+      const input = parent.querySelector('[name="${inputName}"]');
+      if (input) {
+        const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set;
+        if (setter) setter.call(input, ${JSON.stringify(keyword)});
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        console.log('✔️ Set input[name=${inputName}] to: ${keyword}');
+      } else {
+        console.warn("❌ No input with name ${inputName} found in parent");
+      }
+    });
   } else {
-    console.warn("❌ Parent with id=${parentId} not found");
+    console.warn("❌ No elements found with id=${parentId}");
+  }
+} catch (e) {
+  console.error("⚠️ Error in SCOPED INPUTNAME block:", e);
+}`;
+        }
+        const innerMsg = { address: '/' + parts.slice(3).join('/') };
+        const finalInnerScript = generateScriptFromOSC(innerMsg, 'parent');
+        return `try {
+  const parents = document.querySelectorAll('[id="${parentId}"]');
+  if (parents.length > 0) {
+    parents.forEach(parent => {
+${finalInnerScript.replace(/^/gm, '      ')}
+    });
+  } else {
+    console.warn("❌ No elements found with id=${parentId}");
   }
 } catch (e) {
   console.error("⚠️ Error in SCOPED block:", e);
@@ -38,6 +67,24 @@ ${innerScript.replace(/^/gm, '    ')}
   }
 } catch (e) {
   console.error('⚠️ Error in ID script:', e);
+}`;
+    }
+
+    // Mode: inputName
+    if (mode === 'inputName') {
+        return `try {
+  const input = document.querySelector('[name="${value}"]');
+  if (input) {
+    const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set;
+    if (setter) setter.call(input, ${JSON.stringify(keyword)});
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+    console.log('✔️ Set input[name=${value}] to: ${keyword}');
+  } else {
+    console.warn('❌ No input found with name: ${value}');
+  }
+} catch (e) {
+  console.error('⚠️ Error in INPUTNAME script:', e);
 }`;
     }
 
